@@ -20,8 +20,9 @@
     "pending"
   ],
   "devDependencies": {
-    "tape": "^4.0.0",
-    "standard": "^7.0.0"
+    "sinon": "~1.17.7",
+    "standard": "^7.0.0",
+    "tape": "^4.0.0"
   },
   "files": [
     "index.js",
