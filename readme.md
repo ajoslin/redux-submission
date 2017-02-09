@@ -37,6 +37,8 @@ const reducers = combineReducers({
       } else {
         action.payload; // this is the resolved promise's value
       }
+    } else if (action.type === 'SUBMIT_FETCH_ITEMS') {
+      // This is called when the FETCH_ITEMS promise begins.
     }
     return state
   }
