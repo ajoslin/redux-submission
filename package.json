@@ -1,0 +1,30 @@
+{
+  "name": "redux-submission",
+  "main": "index.js",
+  "version": "0.0.0",
+  "description": "Pending and error states for promises in redux.",
+  "license": "MIT",
+  "repository": "ajoslin/redux-submission",
+  "author": {
+    "name": "Andrew Joslin",
+    "email": "andrewtjoslin@gmail.com",
+    "url": "ajoslin.com"
+  },
+  "scripts": {
+    "test": "standard && tape test.js"
+  },
+  "keywords": [
+    "redux",
+    "promise",
+    "error",
+    "pending"
+  ],
+  "devDependencies": {
+    "tape": "^4.0.0",
+    "standard": "^7.0.0"
+  },
+  "files": [
+    "index.js",
+    "test.js"
+  ]
+}
