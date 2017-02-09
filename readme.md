@@ -26,6 +26,8 @@ const {applyMiddleware, createStore, combineReduces} = require('redux')
 const {connect} = require('react-redux')
 const reduxSubmission = require('redux-submission')
 
+const finalCreateStore = applyMiddleware(reduxSubmission.middleware)(createStore)
+
 const reducers = combineReducers({
   // Add your `submission` reducer. The name must be `submission`.
   submission: reduxSubmission.reducer,
