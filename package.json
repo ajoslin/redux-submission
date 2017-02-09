@@ -1,7 +1,7 @@
 {
   "name": "redux-submission",
   "main": "index.js",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Pending and error states for promises in redux.",
   "license": "MIT",
   "repository": "ajoslin/redux-submission",
