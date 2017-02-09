@@ -9,7 +9,7 @@ function isPromise (value) {
 
 exports.reducer = function submissionReducer (state, action) {
   state = state || {}
-  var nextState = extend(state)
+  var nextState = {}
 
   if (action.type.indexOf(PREFIX) === 0) {
     var typeWithoutPrefix = action.type.replace(PREFIX, '')
@@ -17,6 +17,7 @@ exports.reducer = function submissionReducer (state, action) {
       pending: true,
       error: null
     }
+    return extend(state, nextState)
   } else if (action.type in state) {
     nextState[action.type] = {
       pending: false,
@@ -24,8 +25,10 @@ exports.reducer = function submissionReducer (state, action) {
         ? action.payload
         : null
     }
+    return extend(state, nextState)
   }
-  return nextState
+
+  return state
 }
 
 exports.middleware = function promiseMiddleware (options) {
