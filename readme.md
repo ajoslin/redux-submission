@@ -2,7 +2,7 @@
 
 > Pending and error states for promises in redux.
 
-This is *heavily* based upon [redux-pending](https://github.com/adriancooney/redux-pending/), with error support added.
+This heavily borrows from [redux-pending](https://github.com/adriancooney/redux-pending/), with error support added.
 
 * Expects actions to be of the format {type, payload}
 * Handles pending and error state of promises and emits actions to handle pending promises.
@@ -17,20 +17,20 @@ $ npm install --save redux-submission
 
 Three steps.
 
-1. Include `reduxSubmission.middleware` into your store's middleware. This makes our library 'take over' promises.
-2. Add `reduxSubmission.reducer` to your reducers under the `submission` key.
+1. Include `submissionMiddleware` into your store's middleware. This makes our library 'take over' promises.
+2. Add `submissionReducer` to your reducers under the `submission` key.
 3. Use `getPending` and `getError` to check if an action is pending or errored.
 
 ```js
 const {applyMiddleware, createStore, combineReduces} = require('redux')
 const {connect} = require('react-redux')
-const reduxSubmission = require('redux-submission')
+const {submissionMiddleware, submissionReducer} = require('redux-submission')
 
-const finalCreateStore = applyMiddleware(reduxSubmission.middleware)(createStore)
+const finalCreateStore = applyMiddleware(submissionMiddleware)(createStore)
 
 const reducers = combineReducers({
   // Add your `submission` reducer. The name must be `submission`.
-  submission: reduxSubmission.reducer,
+  submission: submissionReducer,
 
   myApp: (state = {}, action) => {
     if (action.type === 'FETCH_ITEMS') {
@@ -53,7 +53,7 @@ Now, just emit the `FETCH_ITEMS` action with a promise as the payload:
 
 ```js
 const React = require('react')
-const {conenct} = require('react-redux')
+const {connect} = require('react-redux')
 const {getPending, getError} = require('redux-submission')
 
 const MyComponent = React.createClass({
@@ -81,25 +81,31 @@ module.exports = connect((state) => {
 
 ## API
 
-#### `reduxSubmission.middleware`
+`reduxSubmission` exports the following variables:
+
+#### `submissionMiddleware`
 
 Middleware for your store that manages promises.
 
-#### `reduxSubmission.reducer`
+#### `submissionReducer`
 
 The reducer that you *must* put under the key `submission`.
 
-#### `reduxSubmission.getError(actionType, state)` -> `error|null`
+#### `getError(actionType, state)` -> `error|null`
 
 Returns an error if the last promise dispatched for this actionType was rejected.
 
 If `state` is not given, it will return a partially applied function.
 
-#### `reduxSubmission.getPending(actionType, state)` -> `Boolean`
+#### `getPending(actionType, state)` -> `Boolean`
 
 Returns true if there is a currenly pending promise dispatched for this action type.
 
 If `state` is not given, it will return a partially applied function.
+
+#### `submissionPrefix(actionType)` -> `String`
+
+Given an `actionType`, returns the `actionType` with the `SUBMIT_` prefix.
 
 ## License
 

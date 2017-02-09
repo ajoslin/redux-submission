@@ -7,7 +7,19 @@ function isPromise (value) {
   return value && typeof value.then === 'function'
 }
 
-exports.reducer = function submissionReducer (state, action) {
+module.exports = {
+  submissionPrefix: submissionPrefix,
+  submissionReducer: submissionReducer,
+  submissionMiddleware: submissionMiddleware,
+  getPending: submissionCheck('pending', Boolean),
+  getError: submissionCheck('error', function (value) { return value || null })
+}
+
+function submissionPrefix (action) {
+  return PREFIX + String(action)
+}
+
+function submissionReducer (state, action) {
   state = state || {}
   var nextState = {}
 
@@ -31,7 +43,7 @@ exports.reducer = function submissionReducer (state, action) {
   return state
 }
 
-exports.middleware = function promiseMiddleware (options) {
+function submissionMiddleware (options) {
   var dispatch = options.dispatch
   return function (next) {
     return function (action) {
@@ -52,11 +64,6 @@ exports.middleware = function promiseMiddleware (options) {
     }
   }
 }
-
-exports.getPending = submissionCheck('pending', Boolean)
-exports.getError = submissionCheck('error', function (value) {
-  return value || null
-})
 
 function submissionCheck (property, mapValue) {
   return function check (actionType, state) {

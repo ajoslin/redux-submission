@@ -2,29 +2,34 @@
 
 var test = require('tape')
 var sinon = require('sinon')
-var reduxSubmission = require('./')
+var {submissionReducer, submissionMiddleware, getPending, getError, submissionPrefix} = require('./')
+
+test('submissionPrefix', function (t) {
+  t.equal(submissionPrefix('FOO'), 'SUBMIT_FOO')
+  t.end()
+})
 
 test('reducer', function (t) {
   var state = {}
-  state = reduxSubmission.reducer(state, {type: 'FOO'})
+  state = submissionReducer(state, {type: 'FOO'})
   t.deepEqual(state, {})
 
-  state = reduxSubmission.reducer(state, {type: 'SUBMIT_FOO'})
+  state = submissionReducer(state, {type: 'SUBMIT_FOO'})
   t.deepEqual(state, {
     FOO: {pending: true, error: null}
   })
 
-  state = reduxSubmission.reducer(state, {type: 'FOO'})
+  state = submissionReducer(state, {type: 'FOO'})
   t.deepEqual(state, {
     FOO: {pending: false, error: null}
   })
 
-  state = reduxSubmission.reducer(state, {type: 'SUBMIT_FOO'})
+  state = submissionReducer(state, {type: 'SUBMIT_FOO'})
   t.deepEqual(state, {
     FOO: {pending: true, error: null}
   })
 
-  state = reduxSubmission.reducer(state, {type: 'FOO', payload: 1, error: true})
+  state = submissionReducer(state, {type: 'FOO', payload: 1, error: true})
   t.deepEqual(state, {
     FOO: {pending: false, error: 1}
   })
@@ -35,7 +40,7 @@ function setupMiddleware () {
   var next = sinon.spy()
   var dispatch = sinon.spy()
 
-  var middleware = reduxSubmission.middleware({dispatch: dispatch})(next)
+  var middleware = submissionMiddleware({dispatch: dispatch})(next)
 
   return {next, dispatch, middleware}
 }
@@ -92,13 +97,13 @@ test('getPending', function (t) {
     }
   }
 
-  t.equal(reduxSubmission.getPending('BAZ', state), true)
+  t.equal(getPending('BAZ', state), true)
 
   state.submission.BAZ.pending = false
-  t.equal(reduxSubmission.getPending('BAZ', state), false)
+  t.equal(getPending('BAZ', state), false)
 
   delete state.submission.BAZ
-  t.equal(reduxSubmission.getPending('BAZ', state), false)
+  t.equal(getPending('BAZ', state), false)
 
   t.end()
 })
@@ -112,13 +117,13 @@ test('getError', function (t) {
     }
   }
 
-  t.equal(reduxSubmission.getError('BAZ', state), 'fail')
+  t.equal(getError('BAZ', state), 'fail')
 
   state.submission.BAZ.error = null
-  t.equal(reduxSubmission.getError('BAZ', state), null)
+  t.equal(getError('BAZ', state), null)
 
   delete state.submission.BAZ
-  t.equal(reduxSubmission.getError('BAZ', state), null)
+  t.equal(getError('BAZ', state), null)
 
   t.end()
 })
