@@ -23,5 +23,8 @@
     "sinon": "~1.17.7",
     "standard": "^7.0.0",
     "tape": "^4.0.0"
+  },
+  "dependencies": {
+    "xtend": "~4.0.1"
   }
 }
